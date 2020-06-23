@@ -1,15 +1,19 @@
-function statement(invoice) { //аргументы  счет, игры убрала (не используется)
+function statement(invoice, plays) { //аргументы  счет, игры 
     let totalAmount = 0; // Общая сумма
     let volumeCredits = 0; //Объем кредитов
     let result = 'Счет для ${invoice.customer}\n'; //результат
     const format = new Inti.NumberFormat("ru-RU",
-    { style: "currency", currency: "RUB",
-    minimumFractionDigits: 2 }).format; //формат в рублях с мин. кол-ом дроб.части
+    { style: "currency", 
+    currency: "RUB",
+    minimumFractionDigits: 2 
+}).format; //формат в рублях с мин. кол-ом дроб.части
 
+let comediesNumber = 0;
     for (let perf of invoice.performances) {
-    const play = plays[perf.playlD];
-    let thisAmount = 0; //это количество
-    console.log(thisAmount);
+        const { playId, audience, type } = perf;
+
+    let thisAmount = countAmount(perf);
+    totalAmount += thisAmount;
 
     switch (play.type) { //условия трагедия или комедия
 
@@ -18,8 +22,7 @@ function statement(invoice) { //аргументы  счет, игры убра�
     if (perf.audience > 30) {
     thisAmount += 1000 * (perf.audience - 30);
     };
-    console.log(thisAmount);
-    break;
+    return thisAmount;
 
     case "comedy":
     thisAmount = 30000;
@@ -27,7 +30,7 @@ function statement(invoice) { //аргументы  счет, игры убра�
     thisAmount += 10000 + 500 * (perf.audience - 20);
     }
     thisAmount += 300 * perf.audience;
-    break;
+    return thisAmount;
     default:
     throw new Error('неизвестный тип: ${play.type}');
     
@@ -49,3 +52,4 @@ function statement(invoice) { //аргументы  счет, игры убра�
     return result;
 }
 }
+module.exports = { statement };

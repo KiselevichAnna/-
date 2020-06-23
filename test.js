@@ -1,4 +1,4 @@
-const { statement } = require("./maingit");
+const { statement } = require("./main");
 //Первый тест 
 const testInvoises = {
   customer: "MDT",
